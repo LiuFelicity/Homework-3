@@ -74,6 +74,17 @@ class MyPortfolio:
         """
         TODO: Complete Task 4 Below
         """
+        roi = self.returns.iloc[:,1:].rolling(21).mean().shift(1) #try  
+        
+        
+        t =roi.rank(axis=1, ascending=False)
+        self.portfolio_weights[t==1]= 0.5
+        self.portfolio_weights[t==3]= 0.3
+        self.portfolio_weights[t==5]= 0.2
+        self.portfolio_weights.fillna(0, inplace=True)
+        # 挑1,3,5因為1,2可能太相近
+
+        self.portfolio_weights[roi.max(axis=1)<= 0] = 0  # 如果所有asset roi <0,  weight設為0 (不投資)
 
         """
         TODO: Complete Task 4 Above
